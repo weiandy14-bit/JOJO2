@@ -1,40 +1,30 @@
 @echo off
-chcp 65001 >nul
+
 echo ============================================================
-echo  估價單 AI 擷取工具 - 打包腳本
+echo  Quotation Extractor - Build Script
 echo ============================================================
 echo.
 
-:: 安裝依賴
-echo [1/2] 安裝依賴套件...
+echo [1/2] Installing dependencies...
 pip install -r requirements.txt
 if %errorlevel% neq 0 (
-    echo 安裝失敗，請確認 Python 環境
+    echo ERROR: pip install failed. Please check your Python environment.
     pause
     exit /b 1
 )
 
-:: 打包
 echo.
-echo [2/2] 打包成 .exe ...
-pyinstaller ^
-    --onefile ^
-    --windowed ^
-    --name "估價單擷取工具" ^
-    --icon NONE ^
-    --hidden-import=anthropic ^
-    --hidden-import=fitz ^
-    --hidden-import=openpyxl ^
-    extractor.py
+echo [2/2] Packaging with PyInstaller...
+pyinstaller --onefile --windowed --name "QuotationExtractor" --hidden-import=anthropic --hidden-import=fitz --hidden-import=openpyxl extractor.py
 
 if %errorlevel% neq 0 (
-    echo 打包失敗
+    echo ERROR: PyInstaller failed.
     pause
     exit /b 1
 )
 
 echo.
 echo ============================================================
-echo  打包完成！執行檔位於 dist\估價單擷取工具.exe
+echo  Done! Output: dist\QuotationExtractor.exe
 echo ============================================================
 pause
